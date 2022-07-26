@@ -1,0 +1,32 @@
+{
+  "name": [
+    {
+      "officialName" : "Lada",
+      "rudeName": "Vedro",
+      "regularName": "Jiguli"
+    }
+ ],
+  "model": [
+    {
+      "modelName": "Granda",
+      "fuelType" : "diesel",
+      "isHatchback" : true,
+      "doors": 5,
+      "color" : "pink",
+      "manufactureDate": "29.08.2020"
+    }
+  ],
+  "options": [
+    {
+      "isSeatsHeating": false,
+      "isSteeringWheelHeating": false
+    }
+  ],
+  "details": [
+    {
+      "winNumber": "42031337",
+      "registrationNumber" : "x777xx77RUS",
+      "maxSpeed": 250
+    }
+  ]
+}
