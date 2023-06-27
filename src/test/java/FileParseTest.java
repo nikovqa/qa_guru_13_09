@@ -6,11 +6,16 @@ import com.codeborne.xlstest.XLS;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.opencsv.CSVReader;
+import org.apache.commons.math3.geometry.spherical.oned.ArcsSet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import domain.Teacher;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -57,6 +62,16 @@ public class FileParseTest {
     }
 
     @Test
+    void csvParseTest() throws Exception {
+        try (InputStream is = classLoader.getResourceAsStream( "qa.csv" );
+             InputStreamReader isr = new InputStreamReader( is )) {
+            CSVReader csvReader = new CSVReader( isr );
+            List<String[]> content = csvReader.readAll();
+            Assertions.assertArrayEquals(new String[] {"Тутчс","JUnit5"}, content.get(1));
+        }
+    }
+
+    @Test
     void zipTest() throws Exception {
         InputStream is = classLoader.getResourceAsStream("sample-zip-file.zip");
         ZipInputStream zis = new ZipInputStream(is);
@@ -84,5 +99,20 @@ public class FileParseTest {
         assertThat(jsonObject.getName()).isEqualTo("Dmitrii");
         assertThat(jsonObject.isGoodTeacher()).isEqualTo(true);
         assertThat(jsonObject.getPassport().getNumber()).isEqualTo(1234);
+    }
+
+    @Test
+    void fileEqualsTest() throws Exception {
+        Selenide.open( "any url" );
+        File download = $( "a[href*='file path']" ).download();
+        try (InputStream isExpected = classLoader.getResourceAsStream( "file name" );
+             InputStream downloaded = new FileInputStream( download )) {
+            Assertions.assertArrayEquals( isExpected.readAllBytes(), downloaded.readAllBytes() );
+/*          Assertions.assertEquals(
+                new String (isExpected.readAllBytes(), UTF_8),
+                new String(downloaded.readAllBytes(), UTF_8)
+            );
+*/
+        }
     }
 }
